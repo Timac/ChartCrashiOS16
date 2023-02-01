@@ -8,6 +8,44 @@ This sample project causes a runtime crash with Swift Charts on iOS 16.3.
 
 Result: You get a runtime crash
 
+
+## Source
+
+The crash is caused by these 30 lines of code:
+
+```
+import SwiftUI
+import Charts
+
+struct ContentView: View {
+	var body: some View {
+		ContainerChart {
+			RuleMark(x: .value("time", 2))
+			RuleMark(x: .value("time", 3))
+			RuleMark(x: .value("time", 4))
+		}
+	}
+}
+
+struct ContainerChart<Content>: View where Content: ChartContent {
+	var content: () -> Content
+
+	var body: some View {
+		Chart {
+			RuleMark(x: .value("time", 0))
+			content()
+		}
+	}
+
+	init(@ChartContentBuilder content: @escaping () -> Content) {
+		self.content = content
+	}
+}
+```
+
+
+## Crashlog
+
 ```
 * thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=1, address=0x9000000000)
     frame #0: 0x000000018c023194 libswiftCore.dylib`swift::TargetMetadata<swift::InProcess>::isCanonicalStaticallySpecializedGenericMetadata() const
