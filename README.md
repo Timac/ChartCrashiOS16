@@ -1,5 +1,6 @@
 
 This sample project causes a runtime crash with Swift Charts on iOS 16.3.
+The issue was reported as radar FB11983173 to Apple 
 
 ## Reproduce
 
